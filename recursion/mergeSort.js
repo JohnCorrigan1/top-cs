@@ -1,6 +1,6 @@
 const arr = [8, 2, 3, 6, 5, 4, 7, 1, 100, 88, 99, 39999, -4, 10]
 
-function sort(arr){
+export default function sort(arr){
     if(arr.length <= 1) return arr;
 
     const middle = Math.floor(arr.length/2)
