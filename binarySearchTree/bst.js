@@ -26,22 +26,22 @@ class BinarySearchTree {
     let left = arrMid - 1;
     let right = arrMid + 1;
 
-    while (left > start) {
+    while (left >= start) {
       this.insert(arr[left]);
       left--;
     }
 
-    while (right < end) {
+    while (right <= end) {
       this.insert(arr[right]);
       right++;
     }
   }
 
-  rebalance(arr){
-    let newTreeArray = this.bfs()
+  rebalance() {
+    let newTreeArray = this.inOrder();
 
-    let rebalanced = new BinarySearchTree(newTreeArray)
-    return rebalanced
+    let rebalanced = new BinarySearchTree(newTreeArray);
+    return rebalanced;
   }
 
   insert(value) {
@@ -70,7 +70,6 @@ class BinarySearchTree {
     }
   }
 
-  
   find(value) {
     if (!this.root) return false;
     let current = this.root;
@@ -89,30 +88,58 @@ class BinarySearchTree {
 
   //breadth first search
   bfs() {
-    let queue = []
-    let visited = []
-    let node = this.root
+    let queue = [];
+    let visited = [];
+    let node = this.root;
 
-    queue.push(node)
+    queue.push(node);
 
-    while(queue.length){
+    while (queue.length) {
       node = queue.shift();
       visited.push(node.value);
-      if(node.left) queue.push(node.left);
-      if(node.right) queue.push(node.right);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
     return visited;
   }
 
   //depth first
-  preOrder(){
+  preOrder() {
+    let visited = [];
+    function traverse(node) {
+      visited.push(node.value);
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+    }
+    traverse(this.root);
+    return visited;
+  }
 
+  postOrder() {
+    let visited = [];
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      if (node.right) traverse(node.right);
+      visited.push(node.value);
+    }
+    traverse(this.root);
+    return visited;
+  }
+
+  inOrder() {
+    let visited = [];
+    function traverse(node) {
+      if (node.left) traverse(node.left);
+      visited.push(node.value);
+      if (node.right) traverse(node.right);
+    }
+    traverse(this.root);
+    return visited;
   }
 }
 
-const arr = [1, 2, 10, 23, 8, 9, 4, 3, 5, 7, 20, 67, 6345, 324];
+const arr = [1, 2, 10, 23, 8, 9, 4, 3, 5, 7, 20, 67, 6000, 324];
 let tree = new BinarySearchTree(arr);
-
 
 tree.insert(30);
 tree.insert(25);
@@ -120,10 +147,15 @@ tree.insert(-1);
 tree.insert(-10);
 tree.insert(-3);
 tree.insert(-2);
-tree.insert(200)
-tree.insert(300)
-tree.insert(500)
-tree.insert(600)
+tree.insert(200);
+tree.insert(300);
+tree.insert(500);
+tree.insert(600);
+tree.insert(5000);
+tree.insert(700);
+tree.insert(1000);
+tree.insert(800);
+
 console.log(tree);
 
 // console.log(tree.find(30));
@@ -142,7 +174,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 // sort array with merge sort to balance tree
 function sort(arr) {
   if (arr.length <= 1) return arr;
-  
+
   const middle = Math.floor(arr.length / 2);
   let left = sort(arr.slice(0, middle));
   let right = sort(arr.slice(middle));
@@ -153,7 +185,7 @@ function merge(arr1, arr2) {
   const merged = [];
   let i = 0;
   let j = 0;
-  
+
   while (i < arr1.length && j < arr2.length) {
     if (arr1[i] <= arr2[j]) {
       merged.push(arr1[i]);
@@ -177,6 +209,9 @@ function merge(arr1, arr2) {
 }
 
 prettyPrint(tree.root, "", "");
-// console.log(tree.bfs())
-tree = tree.rebalance()
+console.log(tree.bfs());
+tree = tree.rebalance();
 prettyPrint(tree.root, "", "");
+
+console.log(tree.preOrder());
+console.log(tree.postOrder());
