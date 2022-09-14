@@ -7,8 +7,7 @@ class Node {
 }
 class BinarySearchTree {
   constructor(arr) {
-    this.arr = sort(arr)
-    console.log(this.arr)
+    this.arr = sort(arr);
     this.root = this.buildTree(0, arr.length - 1);
   }
 
@@ -26,14 +25,11 @@ class BinarySearchTree {
     return Math.max(this.height(root.left), this.height(root.right)) + 1;
   }
 
-  // function to check if tree is height-balanced or not
   isBalanced(root) {
-    // Base condition
     if (!root) return true;
-    // for left and right subtree height
+
     let left = this.height(root.left);
     let right = this.height(root.right);
-    // allowed values for (lh - rh) are 1, -1, 0
     if (
       Math.abs(left - right) <= 1 &&
       this.isBalanced(root.left) == true &&
@@ -91,7 +87,7 @@ class BinarySearchTree {
   }
 
   //breadth first search
-  bfs() {
+  levelOrder() {
     let queue = [];
     let visited = [];
     let node = this.root;
@@ -155,24 +151,6 @@ class BinarySearchTree {
   }
 }
 
-const arr = [1, 2, 10, 23, 8, 9, 4, 3, 5, 7, 20, 67, 324];
-let tree = new BinarySearchTree(arr);
-
-tree.insert(30);
-tree.insert(25);
-tree.insert(-1);
-tree.insert(-10);
-tree.insert(-3);
-tree.insert(-2);
-tree.insert(200);
-tree.insert(300);
-tree.insert(500);
-tree.insert(600);
-tree.insert(5000);
-tree.insert(700);
-tree.insert(1000);
-tree.insert(800);
-
 //prints tree structure
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node.right !== null) {
@@ -221,24 +199,43 @@ function merge(arr1, arr2) {
   return merged;
 }
 
-prettyPrint(tree.root, "", "");
-  console.log(tree.bfs());
-  console.log("height before: ", tree.height(tree.find(6000)));
-console.log(tree.isBalanced(tree.root));
-console.log(tree.inOrder())
-tree.rebalance();
-prettyPrint(tree.root, "", "");
-console.log(tree.isBalanced());
-  console.log("height after: ", tree.height(tree.find(6000)));
-  console.log(tree.preOrder());
-  console.log(tree.postOrder());
-tree.find(6000)
-  console.log(tree.depth(tree.root, tree.find(6000)));
-  console.log(tree.depth(tree.root, tree.find(1000)));
+function driver(){
 
-console.log(tree.inOrder())
+  const myArr = [10, 29, 31, 100, 101, 2, 3, 1, 7, 23, 15, 17, 64, 21, 69, 89, 888]
+  let bst = new BinarySearchTree(myArr)
 
+  console.log(bst.isBalanced(bst.root))
 
-const myarr = [1, 2, 3, 10, 4, 7, 4, 6, 5]
+  console.log(bst.levelOrder())
+  console.log(bst.preOrder())
+  console.log(bst.postOrder())
+  console.log(bst.inOrder())
 
-console.log(sort(myarr))
+  //unbalances tree
+  bst.insert(200)
+  bst.insert(300)
+  bst.insert(1000)
+  bst.insert(900)
+  bst.insert(700)
+  bst.insert(600)
+  bst.insert(2000)
+  bst.insert(201)
+  bst.insert(301)
+  bst.insert(1010)
+  bst.insert(901)
+  bst.insert(500)
+  bst.insert(400)
+  bst.insert(5000)
+
+  
+  prettyPrint(bst.root, "", "" )
+  //bst is now unbalanced
+  console.log(bst.isBalanced(bst.root))
+  //rebalance
+  bst = bst.rebalance()
+  //yay prints true
+  console.log(bst.isBalanced(bst.root))
+  prettyPrint(bst.root, "", "")
+}
+
+driver();
